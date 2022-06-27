@@ -1,9 +1,10 @@
 import React from 'react';
+import PageTitle from '../Shared/PageTitle/PageTitle';
 
 const About = () => {
     return (
         <div>
-            <h2>This is about us</h2>
+            <PageTitle title="About"></PageTitle>
         </div>
     );
 };

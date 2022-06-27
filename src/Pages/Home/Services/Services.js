@@ -5,7 +5,7 @@ import './Services.css';
 const Services = () => {
     const [services, setServices] = useState([]);
     useEffect(() => {
-        fetch('services.json')
+        fetch('https://pure-sierra-28164.herokuapp.com/service')
             .then(res => res.json())
             .then(data => setServices(data));
     }, []);
@@ -14,7 +14,7 @@ const Services = () => {
             <h1 className='services-title mt-5'>Our Services: {services.length}</h1>
             <div className="services-container">
                 {
-                    services.map(service => <Service key={service.id} service={service}></Service>)
+                    services.map(service => <Service key={service._id} service={service}></Service>)
                 }
             </div>
 

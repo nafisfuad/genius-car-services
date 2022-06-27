@@ -6,8 +6,10 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import auth from '../../../firebase.init';
 import Loading from '../../Shared/Loading/Loading';
 import SocialLogin from '../SocialLogin/SocialLogin';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import PageTitle from '../../Shared/PageTitle/PageTitle';
+import axios from 'axios';
 
 const Login = () => {
     const emailRef = useRef('');
@@ -32,7 +34,7 @@ const Login = () => {
     }
 
     if (user) {
-        navigate(from, { replace: true });
+        // navigate(from, { replace: true });
     }
 
     if (error) {
@@ -40,12 +42,17 @@ const Login = () => {
             <p className='text-danger'>Error: {error?.message}</p>
     }
 
-    const handleSubmit = event => {
+    const handleSubmit = async event => {
         event.preventDefault();
         const email = emailRef.current.value;
         const password = passwordRef.current.value;
         // console.log(email, password);
-        signInWithEmailAndPassword(email, password);
+        await signInWithEmailAndPassword(email, password);
+        const { data } = await axios.post('https://pure-sierra-28164.herokuapp.com/login', { email });
+        // console.log(data);
+        localStorage.setItem('accessToken', data.accessToken);
+        navigate(from, { replace: true });
+
     }
     const navigateRegister = event => {
         navigate('/register');
@@ -61,6 +68,7 @@ const Login = () => {
     }
     return (
         <div className='container w-50 mx-auto'>
+            <PageTitle title="Login"></PageTitle>
             <h2 className='text-primary text-center mt-2'>Please Login</h2>
             <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -80,7 +88,7 @@ const Login = () => {
 
             <p>Forget Password? <button className='btn btn-link text-primary pe-auto text-decoration-none' onClick={resetPassword}>Reset Password</button></p>
             <SocialLogin></SocialLogin>
-            <ToastContainer />
+            {/* <ToastContainer /> */}
         </div>
     );
 };
